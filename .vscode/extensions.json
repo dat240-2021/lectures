@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "ms-dotnettools.dotnet-interactive-vscode",
+        "ms-dotnettools.csharp",
+        "icsharpcode.ilspy-vscode"
+    ]
+}

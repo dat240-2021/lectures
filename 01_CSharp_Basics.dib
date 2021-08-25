@@ -1,0 +1,166 @@
+#!markdown
+
+Thoughout the course, we'll be using C# [see sharp], a language on the .NET Platform
+
+# History of .NET
+
+Started ~20 years ago with the .NET Framework. Windows only and proprietary software. 
+
+Got a reboot with .NET Core, an open source version and cross-platform availability. 
+
+Both versions exist in parallel. .NET Core does not have complete feature parity with .NET Framework, but the lastest versions are considered to have enough compatibilty to no longer differentiate and ".NET 5" is the first incarnation in the "One .NET" vision. There are no compelling reasons to start a project using .NET Framework, the "Core" moniker is dropped and the current version is ".NET 5". 
+
+.NET is a platform and have other languages running on it. The most prominent are Visual Basic .NET and F#.
+
+.NET Code, in our case C#, is compiled to Intermediate Language (IL)  and distributed. When running a .NET program the Just In Time (JIT) compiler translates IL to machine code customized to the current CPU and runs the program. 
+
+C# Code -- Compiler --> IL  ---> JIT --> Machine code 
+
+Read pages 8 - 17 in the C# book for more details.
+
+#!markdown
+
+C# code does not care about whitespace. The two lines below are equivalent. 
+
+#!csharp
+
+Console.WriteLine("Hi");
+Console .  
+    WriteLine   (
+        "Hi"
+        );
+
+#!markdown
+
+Statements are finished using the semicolon ;
+
+In .NET Interactive that we're using here, we can have the last statement without the semicolon and the result of that statement will be used as the code block output. This is a .NET Interactive Notebook feature and not part of C#
+
+#!csharp
+
+string name = "Glenn";
+name += " Henriksen";
+name
+
+#!markdown
+
+C# uses braces to signify blocks of code. Like in this `if` statement. 
+
+#!csharp
+
+int number = 5;
+
+if (number > 4) {
+    name = "Glenn";
+    Console.WriteLine("Hi " + name);
+}
+else {
+    Console.WriteLine("False");
+}
+
+#!markdown
+
+C# is a stronly typed language. Variables have to have a type and the type has to be defined when defining the variable. 
+
+An integer variable cannot be defined a string value. 
+
+We can use the keyword `var` to make the compiler infer the type. This can only be done when assigning a value on definition so that the compiler knows what type it is. `thing` is still a string and `otherThing` is still an integer. We just let the compiler figure that out. 
+
+#!csharp
+
+string room = "E-101";
+int num = 42;
+double otherNum = 42.0;
+bool gate = false; 
+
+num = "42";
+
+var thing = "This thing";
+var otherThing = 42;
+
+#!markdown
+
+Classes are defined using the `class` keyword. Here we have two fields that are marked `public`. Protection modifiers let us hide information, we'll get to that later. The default protection level is `private` making then inaccessable from outside the class. Thus we have to mark them as public. 
+
+A class definition can be instansiated using the `new` keyword. 
+
+A class, which is basically a custom type, is a _reference type_. A small piece of memory is allocated on the local stack, containing a _reference_ to the actual data which is stored somewhere else (the _heap_). When comparing reference types directly, you're comparing the references. If they refer to the same piece of data they are equal. If not, they are not equal. Even if the data is the same, they don't refer to the exact same location in memory. 
+
+#!csharp
+
+class Person {
+    public string FirstName;
+    public string LastName;
+}
+
+var p = new Person();
+p.FirstName = "Glenn";
+p.LastName = "Henriksen";
+
+var p2 = new Person();
+p2.FirstName = "Glenn";
+p2.LastName = "Henriksen";
+// p = p2;
+p == p2
+
+#!markdown
+
+Other built in types like `int`, `double`, `bool` and so on are _value types_. The memory allocated on the stack contain the actual value of the variable. In this case, two memory locations are allocated, both given the value `42`. 
+
+When comparing value types, the actual value is compared. These two are considered equal. 
+
+#!csharp
+
+var num1 = 42;
+var num2 = 42;
+num1 == num2
+
+#!markdown
+
+Before using a reference type, we have to allocate memory. We do this using `new`. A reference variable not pointing somewhere, not referencing something, has the value `null`, signaling that it is empty. 
+
+#!csharp
+
+Person p;
+
+p.FirstName // <-- Error. p has not been allocated yet
+
+#!markdown
+
+Once we new it up, we can use it. Firstname still returns `null` since we haven't set it to anything yet, but now our `Person p` at least has a first name field. 
+
+#!csharp
+
+Person p;
+p = new Person();
+p.FirstName
+
+#!markdown
+
+Strings are special in C#, they are technically a reference type, but they (mostly) behave as a value type. For instance, they compare on content, not on reference, and we don't need to `new` them up before using them. 
+
+#!csharp
+
+string str1 = "Hi";
+string str2 = "Hi";
+str1 == str2
+
+#!markdown
+
+Strings in .NET are _immutable_, meaning that the value never changes. In this case, there are three strings created in memory. The two literal strings in code and a third string to hold the result of the operation on line 2. Usually, this doesn't bother us, but sometimes it's relevant, especially when doing performance sensitive work. 
+
+#!csharp
+
+string myName = "Glenn";
+myName += " Henriksen";
+myName
+
+#!markdown
+
+In the 01 folder, there's an example of a console app. This can be run in VS Code in debug mode by pressing `F5`. 
+
+Also, experiment with running `dotnet run` and `dotnet watch run` from the command line in the 01 folder. 
+
+Read chapter 02 and 03 in the C# book for more details on the C# language, types and basic syntax.  
+
+Any questions, comments, conserns can be sent by email to <a href="mailto:glenn@henriksen.no">glenn@henriksen.no</a>, posted in the course [Discord](https://discord.com/channels/877232128570581123/877232128570581126) or mention me on [Twitter](https://twitter.com/henriksen). 
