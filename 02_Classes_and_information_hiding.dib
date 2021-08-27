@@ -1,0 +1,234 @@
+#!markdown
+
+# Let's talk about classes
+
+#!markdown
+
+Classes are used in object oriented programming to encapsulate information. Here we're using C# **properties** to have _getters_ and _setters_ on our class. Then we can add logic both when setting a value (for instance validation or data cleanup) and getting a value (for instance formatting or combining values). 
+
+We're using the _private_ modifier to have variables that are only available inside the class.  
+
+#!csharp
+
+public class Person {
+
+    public Person(string firstName, string  lastName) {
+        FirstName = firstName;
+        LastName = lastName;
+    }
+
+    private string _firstName;
+    public string FirstName {  
+        get {
+            return _firstName;
+        } 
+        set {
+            _firstName = value;
+        }
+    }
+    public string LastName { get; set;}
+
+    public string FullName { get {
+            return FirstName + 
+                (FirstName is not null && FirstName.Length > 0 ? " " : "") 
+                + LastName;
+        }
+    }
+
+    private string _phoneNumber = "";
+    public string PhoneNumber { 
+        get  {
+            return _phoneNumber;
+        }
+        set {
+            _phoneNumber = value.Replace(" ", "");
+        }}
+}  
+
+var p = new Person("Glenn", "Henriksen");
+
+Console.WriteLine(p.PhoneNumber.Length);
+Console.WriteLine("Hi, " + p.FullName + ", (" + p.PhoneNumber + ")");
+
+#!markdown
+
+Classes can _inherit_ from other classes, getting all their properties, methods and fields. We can also add more information to the _child_ object to extend the _base_ object.
+
+In C#, all classes automatically inherit from the base object **object**. 
+
+Object can have constructors. These are methods that are automatically called when instansiating an object. We can add _parameters_ to our constructor and, depending on which constructors we create, we can make certian values required. 
+
+Here, we cannot instantiate our Employee without supplying a first name and a last name. We send those on to the constructor in our parent object, our _base_. 
+
+Now, we no longer have to set the names after instantiating the object, they are set in the base constructor. In our Employee constructor we also set the `EmployeeId`. Here we just set a number, in real life we'd probably have a bit more logic :) 
+
+#!csharp
+
+public class Employee : Person 
+{
+    public Employee(string firstName, string lastName) 
+        : base(firstName, lastName) {
+            EmployeeId = "1525253";
+        }
+    public string EmployeeId { get; set;}
+}
+
+
+var s = new Employee("Kari", "Nilsen");
+// s.FirstName = "Kari";
+// s.LastName = "Simonsen";
+// s.EmployeeId = "123456";
+s
+
+#!markdown
+
+## Generics
+
+Since C# is a strongly typed language there is a problem to be solved when making classes and methods that should be able to be used on many different objects. For instance various collections. The `List` class is one example. We want lists of many different objects. For a student, we could need a list of classes they attend. 
+
+C# solves this problem by using **generics**. We can make classes generic by using a template for the type. Here we have `List<Class>` (called "List of Class") which makes all the instance methods of `Classes` use `Class` as an argument. For instance the `.Add()` method that now get the signature `.Add(Class item)`
+
+We can make our own generic classes by using anglebrackets: `class DataStore<T>`. The `T` is arbitrary, but using `T` is a convention in C#. When using other names like `TKey` or `TValue` the convention is to prefix with `T`.
+
+When instantiating the class, we specify the types and the template markers are replaced with the type we specified. 
+
+#!csharp
+
+public class Student : Person {
+    public Student() : base("", "") {}
+    public string StudentId { get; set;}
+
+    public List<Class> Classes { get; set;} = new List<Class>();
+}
+
+public class Class {}
+
+var student = new Student();
+student.Classes.Add(new Class());
+
+class DataStore<T> {
+    public T Data { get; set;}
+}
+
+var d = new DataStore<decimal>();
+// d.Data = "42";
+
+var d2 = new DataStore<Person>();
+
+class KeyValuePair<TKey, TValue> {
+    public TKey Key { get; set;}
+    public TValue Value { get; set;}
+}
+
+var kv = new KeyValuePair<int, string>();
+kv.Key = 1;
+kv.Value = "Hi";
+kv
+
+#!markdown
+
+## Records
+
+Records are special in that they are automatically compared by value, not by reference.
+
+#!csharp
+
+public record PhoneNumber {
+    public string Number { get; set;}
+    public string CountryCode { get ; set;}
+    public string Extension { get; set; }
+    public override string ToString() {
+        return $"+{CountryCode} {Number} ({Extension})";
+    }
+}
+
+var ph = new PhoneNumber {
+     Number = "90114345",
+     CountryCode = "47"
+};
+ph.Extension = "652";
+
+var ph2 = new PhoneNumber {
+    Number = "90114345",
+    CountryCode = "47",
+    Extension = "652"
+};
+
+ph2 == ph
+
+#!markdown
+
+In C# we have getters and setters, but we can also have initializer properties. They can only be set when the object is initialized, either in the constructor or using the object initializer pattern. 
+
+#!csharp
+
+public record PhoneNumber {
+    public string Number { get; init;}
+    public string CountryCode { get ; init;}
+    public string Extension { get; init; }
+    public override string ToString() {
+        return $"+{CountryCode} {Number} ({Extension})";
+    }
+}
+
+var ph = new PhoneNumber {
+     Number = "90114345",
+     CountryCode = "47",
+     Extension = "652"
+};
+// ph.Extension = "652"; <-- No longer works. We have to use the object initializer above
+
+var ph2 = new PhoneNumber {
+    Number = "90114345",
+    CountryCode = "47",
+    Extension = "652"
+};
+
+ph2 == ph
+
+#!markdown
+
+Records also have a shorthand form like 
+
+```
+public record PhoneNumber(string Number, string CountryCode, string Extension);
+```
+
+Which automatically creates a constuctor and property getters for all parameters. 
+
+#!csharp
+
+public record PhoneNumber(string Number, string CountryCode, string Extension);
+
+#!markdown
+
+We can still add methods if we want to. 
+
+#!csharp
+
+public record PhoneNumber(string Number, string CountryCode, string Extension)
+{
+    public override string ToString() {
+        return $"+{CountryCode} {Number} ({Extension})";
+    }
+}
+
+// Now we have to use the constructor
+var ph = new PhoneNumber(
+     "90114345",
+     "47",
+     "652"
+);
+ph
+
+#!markdown
+
+But once our objects properties can only be set when intializing, how to we change the values? By making copies! Our record is now what's called _immutable_, as in _cannot be mutated_ (changed). 
+
+Records have a special _with_ keyword letting us make a copy of an object but initialize one or more of their properties with a different value. Like here. 
+
+#!csharp
+
+var ph2 = ph with { Extension = "336"} ;
+
+ph2
