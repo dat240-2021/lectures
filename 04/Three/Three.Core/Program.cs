@@ -11,7 +11,6 @@ namespace Three.Core
                 ["exit"] = new ExitCommand(),
                 ["add"] = new AddCommand(),
                 ["rem"] = new RemCommand(),
-                ["size"] = new SizeCommand()
             };
 
             var commandProcessor = new CommandProcessor(new ConsoleCommandReader(), commands);
