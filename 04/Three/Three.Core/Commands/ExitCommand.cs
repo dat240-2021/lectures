@@ -4,6 +4,7 @@ namespace Three.Core
     {
         public bool Run()
         {
+            System.Console.WriteLine("Exit was called");
             return false;
         }
     }

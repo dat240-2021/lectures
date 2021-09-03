@@ -4,6 +4,7 @@ namespace Three.Core
     {
         public bool Run()
         {
+            System.Console.WriteLine("Rem was called");
             return true;
         }
     }

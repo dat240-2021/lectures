@@ -4,6 +4,7 @@ namespace Three.Core
     {
         public bool Run()
         {
+            System.Console.WriteLine("Add was called");
             return true;
         }
     }
