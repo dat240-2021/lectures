@@ -90,28 +90,6 @@ namespace Three.Tests
         }
     }
 
-    public class FakeExitCommand : ICommand
-    {
-        public bool WasCalled { get; private set; }
-
-        public bool Run()
-        {
-            WasCalled = true;
-            return false;
-        }
-    }
-
-    public class FakeContinueCommand : ICommand
-    {
-        public bool WasCalled { get; private set; }
-
-        public bool Run()
-        {
-            WasCalled = true;
-            return true;
-        }
-    }
-
     public class FakeExitCommandReader : IReadCommands
     {
         public bool WasCalled { get; private set; }
