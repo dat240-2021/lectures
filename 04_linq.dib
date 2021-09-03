@@ -1,0 +1,103 @@
+#!csharp
+
+using System.Linq;
+var dwarves = new string[] { "Doc", "Grumpy", "Happy", "Sleepy", "Bashful",
+                          "Sneezy", "Dopey"};
+
+#!markdown
+
+[Extension methods](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods)
+
+#!csharp
+
+public static string FirstChar(this string str) {
+    return str[0].ToString();
+}
+"Fancy pants".FirstChar()
+
+#!markdown
+
+[LINQ](https://docs.microsoft.com/en-us/dotnet/csharp/linq/linq-in-csharp) used [lambda methods](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/lambda-expressions) for predicates and selectors. In single statement lambdas, the return, semicolon and braces are implicit. The following is equivalent to the `.Where` below:
+
+```
+.Where(d => { return d[0] == ch; })
+```
+
+#!csharp
+
+var ch = 'S';
+dwarves.Where(d => d[0] == ch).Select(meh => {
+     var factor = 2;
+    return meh.Length * factor; 
+})
+
+#!markdown
+
+The name of the parameter in the lambda does not matter. Use one that makes sense when reading the code later. 
+
+#!csharp
+
+var ch = 'S';
+dwarves.Where(d => d[0] == ch).Select(meh => (meh, meh.Length))
+
+#!markdown
+
+We can return [anonymous types](https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/types/anonymous-types). 
+
+#!csharp
+
+var ch = 'S';
+dwarves.Where(d => d[0] == ch).Select(meh => new { Dwarf = meh, Length = meh.Length })
+
+#!csharp
+
+var ch = 'S';
+var d = dwarves.Where(d => d[0] == ch).Select(meh => 
+    new { Dwarf = meh, Length = meh.Length }).First();
+d.Dwarf
+
+#!markdown
+
+We can return [touples](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-tuples)
+
+#!csharp
+
+var ch = 'S';
+var d = dwarves.Where(d => d[0] == ch).Select(meh => 
+    (Dwarf: meh, Length: meh.Length )).First();
+d.Dwarf
+
+#!markdown
+
+Grouping and sorting has their own extension methods.
+
+#!csharp
+
+dwarves.GroupBy(d=>d.Length)
+
+#!csharp
+
+dwarves.OrderBy(d => d)
+
+#!csharp
+
+var ch = 'S';
+dwarves.Where(d => d[0] == ch).Select(meh => 
+    (Dwarf: meh, Length: meh.Length )).OrderBy(d => d.Dwarf)
+
+#!csharp
+
+var ch = 'S';
+dwarves.Where(d => d[0] == ch).Select(meh => 
+    (Dwarf: meh, Length: meh.Length )).OrderBy(d => d.Dwarf)
+
+#!markdown
+
+Different syntax yields identical runtime code. This way of writing LINQ queries are just syntactic sugar that is translated to the same method calls as used above.  
+
+#!csharp
+
+from d in dwarves 
+where d[0] == 'S' || d.Length > 4
+orderby d descending
+select (d, d.Length)
