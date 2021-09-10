@@ -20,8 +20,8 @@ namespace Five
 
         public int CommentCount { get; private set; }
 
-        protected List<Comment> _comments { get; set; } = new List<Comment>();
-        public ReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
+        private List<Comment> _comments = new List<Comment>();
+        public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
         public void AddComment(string text)
         {
             _comments.Add(new Comment { Text = text });
@@ -49,11 +49,7 @@ namespace Five
             modelBuilder.Entity<Post>()
                 .Property(p => p.ImageURL)
                 .IsRequired();
-            modelBuilder.Entity<Post>()
-                .Property(p=>p.Comments)
-                .HasField("_comments");
-
-            
+           
         }
 
         public InstaContext()

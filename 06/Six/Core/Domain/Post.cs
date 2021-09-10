@@ -18,7 +18,7 @@ namespace Six.Core.Domain
         public int CommentCount { get; private set; }
 
         private readonly List<Comment> _comments = new();
-        public ReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
+        public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
         public void AddComment(string text)
         {
             _comments.Add(new Comment { Text = text });

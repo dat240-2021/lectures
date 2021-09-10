@@ -18,11 +18,7 @@ public class InstaContext : DbContext
             modelBuilder.Entity<Post>()
                 .Property(p => p.ImageURL)
                 .IsRequired();
-            modelBuilder.Entity<Post>()
-                .Property(p=>p.Comments)
-                .HasField("_comments");
-
-            
+           
         }
 
         public InstaContext()

@@ -16,7 +16,7 @@ namespace Five
                     Caption = "Captoion",
                     NumberOfLikes = 3,
                 };
-                post.AddComment("WooHoo! \\o/");
+                post.AddComment("WooHoo! \\o/ ╰(*°▽°*)╯");
 
 
                 db.Add(post);
