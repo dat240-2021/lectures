@@ -29,5 +29,5 @@ jobs:
           context: 07/01_Flask_App/
           push: true
           tags: |
-            eugeneromero/uis-demo:${{ github.run_id }}
-            eugeneromero/uis-demo:latest
+            ${{ secrets.DOCKER_USERNAME }}/uis-demo:${{ github.run_id }}
+            ${{ secrets.DOCKER_USERNAME }}/uis-demo:latest
