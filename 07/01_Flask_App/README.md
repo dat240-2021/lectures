@@ -17,3 +17,5 @@ This application can be run with
 ```
 docker run --rm -it uis-demo:1.0.0
 ```
+
+To change the port from the default 5000, the flag "--port 80" can be added to the CMD instruction in the Dockerfile.
