@@ -28,8 +28,26 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: 07/01_Flask_App/
+          context: 08/01_Flask_App/
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/uis-demo:${{ github.run_id }}
             ${{ secrets.DOCKER_USERNAME }}/uis-demo:latest
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Container Instances
+        uses: azure/aci-deploy@v1
+        with:
+          resource-group: uis-demo
+          dns-name-label: uis-demo-20210917
+          image: ${{ secrets.DOCKER_USERNAME }}/uis-demo:latest
+          name: uis-demo-aci
+          location: 'norway east'
+          cpu: 1
+          memory: 1.5
+          os-type: Linux
+          ports: 80
