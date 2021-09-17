@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - "07/01_Flask_App/**"
+      - "08/01_Flask_App/**"
 
 jobs:
   build_app:
