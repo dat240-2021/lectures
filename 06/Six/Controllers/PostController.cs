@@ -16,7 +16,7 @@ namespace Six.Controllers
         private readonly InstaContext _context;
 
         public PostController(ILogger<PostController> logger,
-                                IRepository<Post> postRepository
+                                IRepository<Post> postRepository,
                                 InstaContext context) : base()
         {
             _logger = logger;
