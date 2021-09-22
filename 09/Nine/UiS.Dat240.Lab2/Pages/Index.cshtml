@@ -5,6 +5,19 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Menu</h1>
+    
+    <div class="menu">
+    @foreach (var item in Model.FoodItems)
+    {
+        <div class="card" style="width: 18rem">
+            <img class="card-img-top" src="https://picsum.photos/288/180" />
+            <p class="price">@item.Price</p>
+            <h2 class="card-title">@item.Name</h2>
+            <p>@item.CookTime min</p>
+            <p class="card-text">@item.Description</p>
+        </div>
+    }
+</div>
+
 </div>

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using UiS.Dat240.Lab2.Services;
 
 namespace UiS.Dat240.Lab2
 {
@@ -23,6 +24,8 @@ namespace UiS.Dat240.Lab2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddEntityFrameworkSqlite().AddDbContext<ShopContext>();
+            services.AddScoped<IFoodItemProvider, FoodItemProvider>();
             services.AddRazorPages();
         }
 
